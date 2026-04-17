@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#007AFF">
+    <link rel="manifest" href="/manifest.json">
     <title>Family Manager Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -92,7 +94,9 @@ const APP_VERSION = "v1.5.6-html";
             const [loginError, setLoginError] = useState(null);
 
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'family-hub-default';
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            const firebaseConfig = typeof __firebase_config !== 'undefined'
+                ? (typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config)
+                : {
                 apiKey: "", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: ""
             };
 
@@ -208,7 +212,7 @@ const APP_VERSION = "v1.5.6-html";
                             <div class="space-y-6">
                                 <div class="bg-amber-50 rounded-[2rem] p-6 border border-amber-100 shadow-sm">
                                     <div class="flex items-center gap-2 mb-3">
-                                        <span>📝</span> class="text-amber-600"/>
+                                        <span class="text-amber-600">📝</span>
                                         <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Daily Note</span>
                                     </div>
                                     <textarea 
@@ -278,13 +282,13 @@ const APP_VERSION = "v1.5.6-html";
                             <div class="space-y-4">
                                 <div class="flex gap-2">
                                     <input type="text" placeholder="Buy something..." class="flex-1 px-5 py-4 rounded-2xl bg-white border outline-none font-bold text-sm" value={newGrocery} onChange={e => setNewGrocery(e.target.value)} onKeyDown={e => e.key === 'Enter' && (newGrocery && (addDoc(getRef('groceries'), {text: newGrocery, completed: false, createdAt: Date.now()}), setNewGrocery('')))} />
-                                    <button onClick={() => { if(!newGrocery) return; addDoc(getRef('groceries'), {text: newGrocery, completed: false, createdAt: Date.now()}); setNewGrocery(''); }} class="bg-indigo-600 text-white px-5 rounded-2xl"><Plus size={24}/></button>
+                                    <button onClick={() => { if(!newGrocery) return; addDoc(getRef('groceries'), {text: newGrocery, completed: false, createdAt: Date.now()}); setNewGrocery(''); }} class="bg-indigo-600 text-white px-5 rounded-2xl"><span>＋</span></button>
                                 </div>
                                 <div class="space-y-2">
                                     {groceries.sort((a,b) => b.createdAt - a.createdAt).map(item => (
                                         <div key={item.id} class="bg-white p-5 rounded-2xl flex items-center gap-3 shadow-sm border border-slate-50">
                                             <button onClick={() => updateDoc(getRef('groceries', item.id), {completed: !item.completed})}>
-                                                {item.completed ? <span>✅</span> size={24}/> : <span>○</span> size={24}/>}
+                                                {item.completed ? <span>✅</span> : <span>○</span>}
                                             </button>
                                             <span class={`flex-1 text-sm font-bold break-words ${item.completed ? 'line-through text-slate-300' : 'text-slate-700'}`}>{item.text}</span>
                                             <button onClick={() => deleteDoc(getRef('groceries', item.id))} class="text-slate-200 hover:text-rose-500"><span>🗑</span></button>
@@ -311,6 +315,17 @@ const APP_VERSION = "v1.5.6-html";
         };
 
         const container = document.getElementById('app');
-        // Using ReactDOM.render for compatibility\n        ReactDOM.render(React.createElement(App), container);\n    </script>
+        // Use legacy render for React UMD compatibility.
+        ReactDOM.render(React.createElement(App), container);
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch((error) => {
+                    console.log('SW registration failed:', error);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
