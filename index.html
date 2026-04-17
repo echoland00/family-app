@@ -163,13 +163,13 @@ const APP_VERSION = "v1.5.6-html";
                 await updateDoc(getRef('meals', id), { dishes: updated, lastUpdated: Date.now() });
             };
 
-            if (!isReady) return <div class="h-screen flex items-center justify-center"><RefreshCw class="animate-spin text-indigo-600" /></div>;
+            if (!isReady) return <div class="h-screen flex items-center justify-center"><span>⏳</span></div>;
 
             if (!activeProfile) {
                 return (
                     <div class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
                         <div class="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 border border-slate-100">
-                            <div class="flex justify-center mb-6"><div class="p-4 bg-indigo-50 rounded-2xl text-indigo-600"><KeyRound size={40}/></div></div>
+                            <div class="flex justify-center mb-6"><div class="p-4 bg-indigo-50 rounded-2xl text-indigo-600"><span>🔑</span></div></div>
                             <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-widest">Family Planner</h2>
                             <input type="password" placeholder="PIN CODE" class="w-full px-5 py-5 rounded-2xl bg-slate-50 border border-slate-100 outline-none text-center text-3xl font-black tracking-[0.5em] mb-4" maxLength={6} value={quickCode} onChange={e => setQuickCode(e.target.value)} />
                             <button onClick={handleQuickLogin} class="w-full bg-indigo-600 text-white font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-all">ENTER HUB</button>
@@ -186,20 +186,20 @@ const APP_VERSION = "v1.5.6-html";
                     <header class="glass border-b sticky top-0 z-30 px-5 py-4">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
-                                <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md"><Home size={18}/></div>
+                                <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md"><span>🏠</span></div>
                                 <div>
                                     <h1 class="text-sm font-black text-slate-900 uppercase leading-none">{activeProfile.name} Hub</h1>
                                     <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{APP_VERSION}</p>
                                 </div>
                             </div>
                             <button onClick={() => setIsLibraryOpen(true)} class="bg-slate-900 text-white px-4 py-2 rounded-full text-[10px] font-black flex items-center gap-1.5">
-                                <LayoutGrid size={12}/> LIBRARY
+                                <span>📚</span> LIBRARY
                             </button>
                         </div>
                         <div class="flex items-center justify-between gap-2 bg-slate-100/50 p-1.5 rounded-2xl">
-                            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate()-1); setSelectedDate(d.toISOString().split('T')[0]); }} class="p-2 bg-white rounded-xl shadow-sm"><ChevronLeft size={16}/></button>
+                            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate()-1); setSelectedDate(d.toISOString().split('T')[0]); }} class="p-2 bg-white rounded-xl shadow-sm"><span>◀</span></button>
                             <p class="font-black text-slate-700 text-xs">{new Date(selectedDate).toLocaleDateString(undefined, {weekday: 'long', month: 'short', day: 'numeric'})}</p>
-                            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate()+1); setSelectedDate(d.toISOString().split('T')[0]); }} class="p-2 bg-white rounded-xl shadow-sm"><ChevronRight size={16}/></button>
+                            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate()+1); setSelectedDate(d.toISOString().split('T')[0]); }} class="p-2 bg-white rounded-xl shadow-sm"><span>▶</span></button>
                         </div>
                     </header>
 
@@ -208,7 +208,7 @@ const APP_VERSION = "v1.5.6-html";
                             <div class="space-y-6">
                                 <div class="bg-amber-50 rounded-[2rem] p-6 border border-amber-100 shadow-sm">
                                     <div class="flex items-center gap-2 mb-3">
-                                        <StickyNote size={14} class="text-amber-600"/>
+                                        <span>📝</span> class="text-amber-600"/>
                                         <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Daily Note</span>
                                     </div>
                                     <textarea 
@@ -229,7 +229,7 @@ const APP_VERSION = "v1.5.6-html";
                                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
                                             <div class="flex justify-between items-center mb-4">
                                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{type}</span>
-                                                <button onClick={() => addDish(type, SUGGESTED_MEALS[type][Math.floor(Math.random()*3)])} class="p-2 bg-purple-50 text-purple-600 rounded-xl"><Sparkles size={16}/></button>
+                                                <button onClick={() => addDish(type, SUGGESTED_MEALS[type][Math.floor(Math.random()*3)])} class="p-2 bg-purple-50 text-purple-600 rounded-xl"><span>✨</span></button>
                                             </div>
 
                                             <div class="flex gap-2 mb-4">
@@ -240,14 +240,14 @@ const APP_VERSION = "v1.5.6-html";
                                                     onChange={e => setManualInputs({...manualInputs, [type]: e.target.value})}
                                                     onKeyDown={e => e.key === 'Enter' && addDish(type, manualInputs[type])}
                                                 />
-                                                <button onClick={() => addDish(type, manualInputs[type])} class="p-2 bg-slate-100 rounded-xl"><Send size={16}/></button>
+                                                <button onClick={() => addDish(type, manualInputs[type])} class="p-2 bg-slate-100 rounded-xl"><span>➤</span></button>
                                             </div>
 
                                             <div class="space-y-2 mb-4">
                                                 {dishesList.map((d, i) => (
                                                     <div key={i} class="flex items-center justify-between bg-slate-50 px-4 py-2 rounded-xl">
                                                         <span class="text-sm font-bold text-slate-800 break-words flex-1 pr-2">{d}</span>
-                                                        <button onClick={() => removeDish(type, i)} class="text-slate-300"><X size={14}/></button>
+                                                        <button onClick={() => removeDish(type, i)} class="text-slate-300"><span>✕</span></button>
                                                     </div>
                                                 ))}
                                             </div>
@@ -284,10 +284,10 @@ const APP_VERSION = "v1.5.6-html";
                                     {groceries.sort((a,b) => b.createdAt - a.createdAt).map(item => (
                                         <div key={item.id} class="bg-white p-5 rounded-2xl flex items-center gap-3 shadow-sm border border-slate-50">
                                             <button onClick={() => updateDoc(getRef('groceries', item.id), {completed: !item.completed})}>
-                                                {item.completed ? <CheckCircle2 class="text-emerald-500" size={24}/> : <Circle class="text-slate-200" size={24}/>}
+                                                {item.completed ? <span>✅</span> size={24}/> : <span>○</span> size={24}/>}
                                             </button>
                                             <span class={`flex-1 text-sm font-bold break-words ${item.completed ? 'line-through text-slate-300' : 'text-slate-700'}`}>{item.text}</span>
-                                            <button onClick={() => deleteDoc(getRef('groceries', item.id))} class="text-slate-200 hover:text-rose-500"><Trash2 size={16}/></button>
+                                            <button onClick={() => deleteDoc(getRef('groceries', item.id))} class="text-slate-200 hover:text-rose-500"><span>🗑</span></button>
                                         </div>
                                     ))}
                                 </div>
@@ -297,13 +297,13 @@ const APP_VERSION = "v1.5.6-html";
 
                     <nav class="fixed bottom-0 left-0 right-0 glass border-t px-10 py-5 pb-9 flex justify-between items-center z-40">
                         <button onClick={() => setActiveTab('meals')} class={`flex flex-col items-center gap-1.5 ${activeTab === 'meals' ? 'text-indigo-600' : 'text-slate-300'}`}>
-                            <Utensils size={26}/><span class="text-[9px] font-black uppercase">Meals</span>
+                            <span>🍽️</span><span class="text-[9px] font-black uppercase">Meals</span>
                         </button>
                         <button onClick={() => setActiveTab('groceries')} class={`flex flex-col items-center gap-1.5 ${activeTab === 'groceries' ? 'text-indigo-600' : 'text-slate-300'}`}>
-                            <ShoppingCart size={26}/><span class="text-[9px] font-black uppercase">Groc</span>
+                            <span>🛒</span><span class="text-[9px] font-black uppercase">Groc</span>
                         </button>
                         <button onClick={() => setActiveProfile(null)} class="flex flex-col items-center gap-1.5 text-slate-300">
-                            <Fingerprint size={26}/><span class="text-[9px] font-black uppercase">Exit</span>
+                            <span>👤</span><span class="text-[9px] font-black uppercase">Exit</span>
                         </button>
                     </nav>
                 </div>
